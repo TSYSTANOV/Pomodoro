@@ -10,11 +10,7 @@ Array.from(navigationBtns).forEach((el)=>{
         document.querySelector('.navigation__btn_active').classList.remove('navigation__btn_active')
         event.target.classList.add('navigation__btn_active')
         state.status = event.target.dataset.use
-        clearTimeout(state.timerId)
-        state.isActive = false
-        btnStart.textContent = 'Старт'
-        state.timeLeft = state[state.status]
-        showTime(state.timeLeft)
+        stop()
     })
 })
 
@@ -26,11 +22,10 @@ export function changeActiveBtn(dataUse){
 
 
 function stop(){
-    console.log(state.timerId)
     clearTimeout(state.timerId)
     state.isActive = false
     btnStart.textContent = 'Старт'
-    state.timeLeft = state.work
+    state.timeLeft = state[state.status]
     showTime(state.timeLeft)
 }
 
