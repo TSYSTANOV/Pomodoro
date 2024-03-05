@@ -1,4 +1,7 @@
+import stop from "./control.js"
 import { state } from "./state.js"
+import { changeActiveBtn } from "./control.js"
+import showTime from "./timer.js"
 
 const titleElem = document.querySelector('.title')
 const countPomodoro = document.querySelector('.count_num')
@@ -20,7 +23,7 @@ liAddToDo.append(btnAddToDo)
 toDoListElem.textContent = ''
 toDoListElem.append(liAddToDo)
 
-const getToDo = () =>{
+export const getToDo = () =>{
     const toDoList = JSON.parse(localStorage.getItem('pomodoro') || '[]')
     return toDoList
 
@@ -51,7 +54,7 @@ function renderToDoList(list){
     toDoListElem.textContent = ''
     list.forEach((el, index, arr)=>{
 
-        if(el.id !== 'default'){
+  
             let li = document.createElement('li')
             li.dataset.Id = el.id
 
@@ -67,8 +70,6 @@ function renderToDoList(list){
                 toDoActiveBtn.textContent = title
                 changeLocalStorage(el.id,title)
                 showToDo()
-               
-                
             })
 
             let toDoBtnDel = document.createElement('button')
@@ -84,7 +85,12 @@ function renderToDoList(list){
             toDoActiveBtn.className = 'todo__btn'
             toDoActiveBtn.textContent = el.title
             toDoActiveBtn.addEventListener('click',()=>{
-                state.activeTodo = list[index]
+                stop()
+                state.status = 'work'
+                state.timeLeft = state[state.status]
+                showTime(state.timeLeft)
+                changeActiveBtn(state.status)
+                // state.activeTodo = list[index]
                 showToDo(index)
             })
 
@@ -95,7 +101,7 @@ function renderToDoList(list){
             li.querySelector('.todo__item-wrapper').append(toDoActiveBtn,toDoBtnEdit, toDoBtnDel)
 
             toDoListElem.prepend(li)
-        }
+        
 
     })
     toDoListElem.append(liAddToDo)
@@ -131,7 +137,6 @@ function showToDo(index = 0){
     titleElem.textContent = state.activeTodo ? state.activeTodo.title : 'Pomodoro'
     countPomodoro.textContent = state.activeTodo ? state.activeTodo.pomodoro : '0' 
 }
-
 
 
 

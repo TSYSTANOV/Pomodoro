@@ -47,5 +47,5 @@ export const initControl = () =>{
     btnStop.addEventListener('click', stop)
     showTime(state.timeLeft)
 }
-
+export default stop
 
